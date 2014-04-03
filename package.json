@@ -1,0 +1,23 @@
+{
+  "name": "rfc6902",
+  "version": "0.0.1",
+  "description": "A json patch generator.",
+  "main": "lib/rfc6902.js",
+  "scripts": {
+    "dev": "node_modules/LiveScript/bin/lsc -bcw ./lib",
+    "test": "node_modules/LiveScript/bin/lsc test"
+  },
+  "keywords": [
+    "rfc6902",
+    "json",
+    "patch"
+  ],
+  "author": "caasi Huang",
+  "license": "ISC",
+  "devDependencies": {
+    "LiveScript": "^1.2.0"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
