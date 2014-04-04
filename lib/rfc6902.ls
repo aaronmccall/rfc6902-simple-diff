@@ -1,6 +1,6 @@
 _ = require \lodash
 
-simple-diff = (lhs, rhs, path = '') ->
+_simple-diff = (lhs, rhs, path = '') ->
   result = []
   is-collection =
     l: _.isArray lhs or _.isPlainObject lhs
@@ -8,7 +8,7 @@ simple-diff = (lhs, rhs, path = '') ->
   if is-collection.l and is-collection.r
     keys = _.union Object.keys(lhs), Object.keys(rhs)
     for key in keys
-      result .= concat simple-diff lhs[key], rhs[key], "#path/#key"
+      result .= concat _simple-diff lhs[key], rhs[key], "#path/#key"
   else
     if not (_.isNaN lhs and _.isNaN rhs) and lhs isnt rhs
       if lhs is undefined
@@ -26,35 +26,48 @@ simple-diff = (lhs, rhs, path = '') ->
           op:    \replace
           path:  path
           value: rhs
+    else
+      result.push do
+        op:    \nop
+        path:  path
+        value: lhs
   result
+
+_cleanup = ->
+  for patch in it when patch.op isnt \nop and not patch.merged
+    if patch.op is \remove then delete patch.value
+    patch
 
 # O(n^2)
 diff = (lhs, rhs) ->
-  result = simple-diff lhs, rhs
-  cleanuped = []
+  d = _simple-diff lhs, rhs
+  result = []
   # should count by added, then i can deal with copy
-  for removed in result when removed.op is \remove
-    for added in result when added.op is \add
-      if removed.path is added.path
-        cleanuped.push do
-          op:    \replace
-          path:  added.path
-          value: added.value
-        removed.merged = added.merged = true
-        break
-      else if removed.value is added.value
-        cleanuped.push do
-          op:   \move
-          from: removed.path
+  for added in d when added.op is \add
+    for patch in d when patch isnt added
+      if patch.op is \remove
+        if patch.path is added.path
+          result.push do
+            op:    \replace
+            path:  added.path
+            value: added.value
+          patch.merged = added.merged = true
+          break
+        else if patch.value is added.value
+          result.push do
+            op:   \move
+            from: patch.path
+            path: added.path
+          patch.merged = added.merged = true
+          break
+      else if patch.op is \nop and patch.value is added.value
+        result.push do
+          op: \copy
+          from: patch.path
           path: added.path
-        removed.merged = added.merged = true
-        break
-  for patch in result
-    if not patch.merged
-      if patch.op is \remove then delete patch.value
-      cleanuped.push patch
-  cleanuped
+        added.merged = true
+  result.concat _cleanup d
 
 module.exports =
-  simple-diff: simple-diff
+  simple-diff: (lhs, rhs) -> _cleanup _simple-diff lhs, rhs
   diff: diff
