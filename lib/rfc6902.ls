@@ -10,7 +10,7 @@ _simple-diff = (lhs, rhs, path = '') ->
     for key in keys
       result .= concat _simple-diff lhs[key], rhs[key], "#path/#key"
   else
-    if not (_.isNaN lhs and _.isNaN rhs) and lhs isnt rhs
+    if not _.isEqual lhs, rhs
       if lhs is undefined
         result.push do
           op:    \add
@@ -53,14 +53,14 @@ diff = (lhs, rhs) ->
             value: added.value
           patch.merged = added.merged = true
           break
-        else if patch.value is added.value
+        else if _.isEqual patch.value, added.value
           result.push do
             op:   \move
             from: patch.path
             path: added.path
           patch.merged = added.merged = true
           break
-      else if patch.op is \nop and patch.value is added.value
+      else if patch.op is \nop and _.isEqual patch.value, added.value
         result.push do
           op: \copy
           from: patch.path

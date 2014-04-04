@@ -1,11 +1,11 @@
 {
   "name": "rfc6902",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A json patch generator.",
   "main": "lib/rfc6902.js",
   "scripts": {
     "dev": "node_modules/LiveScript/bin/lsc -bcw ./lib",
-    "test": "node_modules/LiveScript/bin/lsc test"
+    "test": "node_modules/mocha/bin/mocha --require chai --reporter list --compilers ls:LiveScript"
   },
   "keywords": [
     "rfc6902",
@@ -15,7 +15,9 @@
   "author": "caasi Huang",
   "license": "ISC",
   "devDependencies": {
-    "LiveScript": "^1.2.0"
+    "LiveScript": "^1.2.0",
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1"
   },
   "dependencies": {
     "lodash": "^2.4.1"
