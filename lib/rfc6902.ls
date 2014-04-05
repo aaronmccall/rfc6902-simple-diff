@@ -42,23 +42,16 @@ _cleanup = ->
 diff = (lhs, rhs) ->
   d = _simple-diff lhs, rhs
   result = []
-  # should count by added, then i can deal with copy
   for added in d when added.op is \add
     for patch in d when patch isnt added
       if patch.op is \remove
-        if patch.path is added.path
-          result.push do
-            op:    \replace
-            path:  added.path
-            value: added.value
-          patch.merged = added.merged = true
-          break
-        else if _.isEqual patch.value, added.value
+        if _.isEqual patch.value, added.value
           result.push do
             op:   \move
             from: patch.path
             path: added.path
           patch.merged = added.merged = true
+          # then leave the inner loop
           break
       else if patch.op is \nop and _.isEqual patch.value, added.value
         result.push do
