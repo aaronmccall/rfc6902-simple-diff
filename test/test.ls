@@ -29,7 +29,7 @@ describe 'In RFC 6902,' ->
     lhs = foo: \bar bar: {}
     rhs = bar: foo: \bar
     it "should not happen in simple diff" ->
-      patches = differ.simple-diff lhs, rhs
+      patches = differ.basic lhs, rhs
       for patch in patches
         patch.op.should.not.equal \move
     it "should happen when a value has been moved" ->
@@ -42,7 +42,7 @@ describe 'In RFC 6902,' ->
     lhs = foo: \bar bar: {}
     rhs = foo: \bar bar: foo: \bar
     it "should not happen in simple diff" ->
-      patches = differ.simple-diff lhs, rhs
+      patches = differ.basic lhs, rhs
       for patch in patches
         patch.op.should.not.equal \copy
     it "should happen when a value has been copied" ->

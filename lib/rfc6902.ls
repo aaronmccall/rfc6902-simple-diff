@@ -1,6 +1,6 @@
 _ = require \lodash
 
-_simple-diff = (lhs, rhs, path = '') ->
+_basic-diff = (lhs, rhs, path = '') ->
   result = []
   is-collection =
     l: _.isArray lhs or _.isPlainObject lhs
@@ -10,7 +10,7 @@ _simple-diff = (lhs, rhs, path = '') ->
     for key in keys
       pointer = key.replace /~/gi \~0
       pointer .= replace /\//gi \~1
-      result .= concat _simple-diff lhs[key], rhs[key], "#path/#pointer"
+      result .= concat _basic-diff lhs[key], rhs[key], "#path/#pointer"
   else
     if not _.isEqual lhs, rhs
       if lhs is undefined
@@ -42,7 +42,7 @@ _cleanup = ->
 
 # O(n^2)
 diff = (lhs, rhs) ->
-  d = _simple-diff lhs, rhs
+  d = _basic-diff lhs, rhs
   result = []
   for added in d when added.op is \add
     for patch in d when patch isnt added
@@ -64,5 +64,5 @@ diff = (lhs, rhs) ->
   result.concat _cleanup d
 
 module.exports =
-  simple-diff: (lhs, rhs) -> _cleanup _simple-diff lhs, rhs
+  basic: (lhs, rhs) -> _cleanup _basic-diff lhs, rhs
   diff: diff

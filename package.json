@@ -1,6 +1,6 @@
 {
-  "name": "rfc6902",
-  "version": "0.0.2",
+  "name": "rfc6902-diff",
+  "version": "0.1.0",
   "description": "A json patch generator.",
   "main": "lib/rfc6902.js",
   "scripts": {
