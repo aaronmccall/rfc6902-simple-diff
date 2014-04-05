@@ -26,7 +26,7 @@ describe 'In RFC 6902,' ->
     lhs = foo: \bar bar: {}
     rhs = bar: foo: \bar
     it "should not happen in simple diff" ->
-      patches = differ.simple-diff(lhs, rhs)
+      patches = differ.simple-diff lhs, rhs
       for patch in patches
         patch.op.should.not.equal \move
     it "should happen when a value has been moved" ->
@@ -39,7 +39,7 @@ describe 'In RFC 6902,' ->
     lhs = foo: \bar bar: {}
     rhs = foo: \bar bar: foo: \bar
     it "should not happen in simple diff" ->
-      patches = differ.simple-diff(lhs, rhs)
+      patches = differ.simple-diff lhs, rhs
       for patch in patches
         patch.op.should.not.equal \copy
     it "should happen when a value has been copied" ->
@@ -57,5 +57,12 @@ describe 'In RFC 6902,' ->
       patch = differ.diff({foo: Infinity}, {foo: Infinity})
       patch.should.have.length 0
 
-  #TODO: path should follow RFC 6901
+  describe "path should follow RFC 6901," (_) ->
+    lhs = '~foo~': \bar
+    rhs = '/foo/': \bar
+    patch = differ.diff(lhs, rhs).0
+    it "~ should become ~0" ->
+      patch.from.should.be.equal '/~0foo~0'
+    it "/ should become ~1" ->
+      patch.path.should.be.equal '/~1foo~1'
 

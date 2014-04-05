@@ -8,7 +8,9 @@ _simple-diff = (lhs, rhs, path = '') ->
   if is-collection.l and is-collection.r
     keys = _.union Object.keys(lhs), Object.keys(rhs)
     for key in keys
-      result .= concat _simple-diff lhs[key], rhs[key], "#path/#key"
+      pointer = key.replace /~/gi \~0
+      pointer .= replace /\//gi \~1
+      result .= concat _simple-diff lhs[key], rhs[key], "#path/#pointer"
   else
     if not _.isEqual lhs, rhs
       if lhs is undefined
