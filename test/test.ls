@@ -1,4 +1,7 @@
-require \chai .should!
+require! chai
+chai.should!
+expect = chai.expect
+
 differ = require '../lib/rfc6902'
 
 describe 'In RFC 6902,' ->
@@ -66,3 +69,45 @@ describe 'In RFC 6902,' ->
     it "/ should become ~1" ->
       patch.path.should.be.equal '/~1foo~1'
 
+  # refuse to follow Appendix A.2., A.4., A.7. and A.16.
+  describe "examples in Appendix A." (_) ->
+    it "1." ->
+      patch = differ.diff({foo: \bar}, {baz: \qux foo: \bar}).0
+      patch.op.should.equal \add
+      patch.path.should.equal '/baz'
+      patch.value.should.equal \qux
+    #it "A.2." ->
+    #  patch = differ.diff {foo: <[bar baz]>}, {foo: <[bar qux baz]>}
+    #  console.log patch
+    #  # will fail
+    #  patch.should.have.length 1
+    #  patch = patch.0
+    #  patch.op.should.equal \add
+    #  patch.path.should.equal '/foo/1'
+    #  patch.value.should.equal \qux
+    it "3." ->
+      patch = differ.diff({baz: \qux foo: \bar}, {foo: \bar}).0
+      patch.op.should.equal \remove
+      patch.path.should.equal '/baz'
+      expect(patch).not.to.have.property \value
+    it "5." ->
+      patch = differ.diff({baz: \qux foo: \bar}, {baz: \boo foo: \bar}).0
+      patch.op.should.equal \replace
+      patch.path.should.equal '/baz'
+      patch.value.should.equal \boo
+    it "6." ->
+      patch = differ.diff do
+        {foo: {bar: \baz waldo: \fred} qux: {corge: \grault}}
+        {foo: {bar: \baz} qux: {corge: \grault thud: \fred}}
+      patch .= 0
+      patch.op.should.equal \move
+      patch.from.should.equal '/foo/waldo'
+      patch.path.should.equal '/qux/thud'
+    it "10." ->
+      patch = differ.diff do
+        {foo: \bar}
+        {foo: \bar child: grandchild: {}}
+      patch .= 0
+      patch.op.should.equal \add
+      patch.path.should.equal '/child'
+      patch.value.should.deep.equal grandchild: {}
