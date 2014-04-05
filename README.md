@@ -3,18 +3,23 @@ rfc6902 diff generator
 
 Another json diff tool.
 
-Develop
--------
+Usage
+-----
 
 ```shell
-npm i
+npm install rfc6902
+```
+
+### Develop
+
+```shell
+npm install
 npm run dev
 ```
 
-Test
-----
+### Test
 
 ```shell
-npm i
+npm install
 npm run test
 ```
