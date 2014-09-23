@@ -1,30 +1,31 @@
 {
-  "name": "rfc6902-diff",
+  "name": "rfc6902-simple-diff",
   "version": "0.1.0",
-  "description": "A json patch generator.",
-  "main": "lib/rfc6902.js",
+  "description": "A simplified json patch generator.",
+  "main": "lib/rfc6902-simple-diff.js",
   "scripts": {
-    "dev": "node_modules/LiveScript/bin/lsc -bcw ./lib",
-    "test": "node_modules/mocha/bin/mocha --require chai --reporter list --compilers ls:LiveScript"
+    "test": "node_modules/mocha/bin/mocha --require chai --reporter list"
   },
   "keywords": [
     "rfc6902",
     "json",
     "patch"
   ],
-  "author": "caasi Huang",
+  "author": "Aaron McCall",
+  "contributors": [
+    "Caasi Huang"
+  ],
   "license": "ISC",
   "devDependencies": {
-    "LiveScript": "^1.2.0",
     "mocha": "^1.18.2",
     "chai": "^1.9.1"
   },
   "dependencies": {
-    "lodash": "^2.4.1"
+    "underscore": "~1.6.0"
   },
-  "homepage": "https://github.com/caasi/rfc6902",
+  "homepage": "https://github.com/aaronmccall/rfc6902-simple-diff",
   "repository": {
     "type": "git",
-    "url": "git@github.com:caasi/rfc6902.git"
+    "url": "git@github.com:aaronmccall/rfc6902-simple-diff.git"
   }
 }
