@@ -84,7 +84,7 @@ describe('In RFC 6902,', function () {
     });
   });
 
-  return describe("examples in Appendix A.", function (_) {
+  describe("examples in Appendix A.", function (_) {
     it("1.", function () {
       var patch = diff({
         foo: 'bar'
@@ -134,6 +134,30 @@ describe('In RFC 6902,', function () {
       patch.value.should.deep.equal({
         grandchild: {}
       });
+    });
+  });
+
+  describe('recursion depth', function () {
+    it('is limited to 64 levels', function () {
+      // Make a deeply nested JSON object representation
+      // { "0": { "1": {… "63": { } …} } }
+      var i = -1;
+      var json = '{ ';
+      while (++i < 64) {
+        json += '"' + i + '": { ';
+      }
+      json += '} }';
+      while (--i) {
+        json += ' }';
+      }
+      // Up to 64 levels should not throw
+      expect(function () {
+        diff(JSON.parse(json), JSON.parse(json));
+      }).not.to.throw();
+      // But 65 should
+      expect(function () {
+        diff({ foo: JSON.parse(json) }, { foo: JSON.parse(json) });
+      }).to.throw();
     });
   });
 });
