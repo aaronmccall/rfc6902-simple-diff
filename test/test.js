@@ -30,16 +30,16 @@ describe('In RFC 6902,', function () {
       });
     });
     it('should have "-" as final node when append is not false', function () {
-        var patch = diff({foo: []}, {foo: [1]})[0];
+        var patch = diff({foo: [1]}, {foo: [1,2]})[0];
         patch.op.should.equal('add');
         patch.path.should.equal('/foo/-');
-        patch.value.should.equal(1);
+        patch.value.should.equal(2);
     });
     it('should have the index as final node when append is false', function () {
-        var patch = diff({foo: []}, {foo: [1]}, {append: false})[0];
+        var patch = diff({foo: [1]}, {foo: [1,2]}, {append: false})[0];
         patch.op.should.equal('add');
-        patch.path.should.equal('/foo/0');
-        patch.value.should.equal(1);
+        patch.path.should.equal('/foo/1');
+        patch.value.should.equal(2);
     });
   });
   describe("remove", function (_) {
