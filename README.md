@@ -3,7 +3,7 @@ rfc6902 simple diff generator
 
 An extremely simple JSON patch tool that generates rfc6902 compliant add, remove, and replace operations only.
 
-If you are looking for a complete implementation(differ and patcher), please check @chbrown's [rfc6902](https://www.npmjs.org/package/rfc6902) or Cujo.js's [jiff](https://www.npmjs.org/package/jiff).
+If you are looking for a complete implementation(differ and patcher), please check out @chbrown's [rfc6902](https://www.npmjs.org/package/rfc6902).  If you are looking for a complete implementation of patching but just add/remove/replace operations for diffing please check out Cujo.js's [jiff](https://www.npmjs.com/package/jiff#diff).
 
 Getting started
 -----
