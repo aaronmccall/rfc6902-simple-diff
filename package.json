@@ -1,8 +1,8 @@
 {
   "name": "rfc6902-simple-diff",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A simplified json patch generator.",
-  "main": "lib/rfc6902-simple-diff.js",
+  "main": "lib/standalone.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha --require chai --reporter list"
   },
@@ -13,15 +13,16 @@
   ],
   "author": "Aaron McCall",
   "contributors": [
-    "Caasi Huang"
+    "Caasi Huang",
+    "Zachary R. Smith"
   ],
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^1.18.2",
-    "chai": "^1.9.1"
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
   },
   "dependencies": {
-    "underscore": "~1.6.0"
+    "lodash": "^4.17.4"
   },
   "homepage": "https://github.com/aaronmccall/rfc6902-simple-diff",
   "repository": {
