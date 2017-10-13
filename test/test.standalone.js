@@ -3,7 +3,7 @@ chai.should();
 var expect = chai.expect;
 var diff = require('../');
 
-describe('In RFC 6902,', function () {
+describe('(Standalone) In RFC 6902,', function () {
   describe('path', function (_) {
     it('should start at "/" if no path in options', function () {
       var patch = diff({foo: 1}, null)[0];
@@ -31,6 +31,7 @@ describe('In RFC 6902,', function () {
     });
     it('should have "-" as final node when append is not false', function () {
         var patch = diff({foo: [1]}, {foo: [1,2]})[0];
+
         patch.op.should.equal('add');
         patch.path.should.equal('/foo/-');
         patch.value.should.equal(2);
@@ -65,7 +66,7 @@ describe('In RFC 6902,', function () {
       patch.value.should.equal('foobar');
     });
   });
-  describe("even NaN and Infinity are not part of JSON,", function (_) {
+  describe("even though NaN and Infinity are not part of JSON,", function (_) {
     it("NaN should be equal to NaN", function () {
       var patch = diff({
         foo: NaN
